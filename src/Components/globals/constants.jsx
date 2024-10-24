@@ -1,0 +1,1 @@
+export const baseurl=import.meta.env.VITE_base_Url;
