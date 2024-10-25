@@ -1,5 +1,5 @@
 export default function Approver({ cards }) {
-    console.log(cards);
+   
 
     return (
         <>

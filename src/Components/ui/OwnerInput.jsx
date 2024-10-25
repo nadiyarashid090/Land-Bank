@@ -3,7 +3,7 @@ import { useState,useEffect } from "react";
 import { ChevronDown,ChevronUp } from "lucide-react";
 import { baseurl } from "../globals/constants";
 export default function OwnerInput({handleOwner,ownerName,visibleInput,setVisibleInput,assetId,cityId}){
-    console.log(assetId);
+  
     
     const [isOwnerStatusVisible, setIsOwnerStatusVisible] = useState(false);
     const [ownerStatus, setOwnerStatus] = useState([]);
@@ -30,8 +30,6 @@ export default function OwnerInput({handleOwner,ownerName,visibleInput,setVisibl
         setParams();
 
     },[assetId,cityId]);
-    console.log("assetId",assetId,cityId);
-    
     const getOwner = async () => {
         try {
             // const response = await axios(`${baseurl}/Asset/OwnerFilter/?&assetId=${assetId}&cityId=${cityId}`, {
@@ -44,7 +42,7 @@ export default function OwnerInput({handleOwner,ownerName,visibleInput,setVisibl
 
 
             );
-            console.log(response?.data.data,"owner");
+          
             
             
             setOwnerStatus(response?.data.data)

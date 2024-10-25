@@ -41,7 +41,7 @@ import { baseurl } from "../globals/constants";
                         {districtName}
                         {visibleInput==="District"? <ChevronUp /> : <ChevronDown />}
                     </button>
-                    {visibleInput==="District" && ((districts.length) === 0 ? <ul className="bg-white  outline-none rounded-[10px] border border-primary-input text-base w-max text-primary font-outfit  overflow-y-auto absolute top-20 left-0"><li className="p-2">No Data found</li></ul> : <ul name="" id="" className="w-max outline-none border border-primary-input text-base text-primary font-outfit overflow-y-auto absolute top-20 left-0  bg-white" >
+                    {visibleInput==="District" && ((districts.length) === 0 ? <ul className="bg-white  outline-none rounded-[10px] border border-primary-input text-base w-max text-primary font-outfit  overflow-y-auto absolute top-20 left-0"><li className="p-2">No items found</li></ul> : <ul name="" id="" className="w-max outline-none border border-primary-input text-base text-primary font-outfit overflow-y-auto absolute top-20 left-0  bg-white" >
 
 
 

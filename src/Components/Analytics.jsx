@@ -187,11 +187,10 @@ export default function Analytics() {
     const handleAsset = (id, assetname) => {
         setAssetId(id);
         setAssetName(assetname);
-
         Url.searchParams.set("assetId", id);
+
         setCityId("");
         setCityName("City");
-
         Url.searchParams.delete("cityId");
 
 
