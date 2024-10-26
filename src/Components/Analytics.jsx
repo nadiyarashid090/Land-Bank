@@ -23,11 +23,11 @@ export default function Analytics() {
 
     const [searchText, setSearchText] = useState('');
 
-    const [assetName, setAssetName] = useState(roleName!=="Approver"?location.state.assetName:"Asset");
-    const [assetId, setAssetId] = useState(roleName!=="Approver"?location.state.assetId:"");
+    const [assetName, setAssetName] = useState(location.state.assetName);
+    const [assetId, setAssetId] = useState(location.state.assetId);
 
-    const [cityName, setCityName] = useState(roleName!=="Approver"?location.state.cityName:"City");
-    const [cityId, setCityId] = useState(roleName!=="Approver"?location.state.cityId:"");
+    const [cityName, setCityName] = useState(location.state.cityName);
+    const [cityId, setCityId] = useState(location.state.cityId);
 
 
 
@@ -97,9 +97,9 @@ export default function Analytics() {
 
     }
     useEffect(() => {
-        if(roleName!=="Approver"){
+        
             setParams();
-        }
+        
        
     }, [])
 
@@ -449,7 +449,7 @@ export default function Analytics() {
             </div>}
 
             {isloading ? <Loader /> :
-                <div> {cards ?
+                <div> {cards?.length > 0 ?
                     roleName==="Approver"?<Approver cards={cards}/>:<div className="grid grid-cols-3 gap-[13px] my-6">
                     {cards?.map((card, index) => {
                         return (
