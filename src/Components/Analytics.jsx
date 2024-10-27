@@ -489,7 +489,7 @@ export default function Analytics() {
                                             </div>
                                             <div className="flex gap-3">
                                                 <img src="src/assets/analy2.svg" alt="" />
-                                                <p></p>
+                                                <p className="text-neutral-700 font-outfit font-medium text-lg leading-[21.6px]">{card.deedType}</p>
                                             </div>
                                         </div>
                                     </div>

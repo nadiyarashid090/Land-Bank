@@ -29,19 +29,19 @@ export default function Approver({ cards }) {
                                         <td className="py-3  px-2 border-primary-300  "><div className="py-[6px] border-primary-300 border-r text-neutral-600">{card.tdDate}</div></td>
                                         <td className="py-3 rounded-r-lg px-2 border-primary-300 "><div
                                             className={`py-[6px] 
-                                    ${card.status === "Data Not Submitted" && "text-[#F79708]"} 
-                                    ${card.status === "Waiting for Approval" && "text-[#487ADA]"}
+                                    ${card.status === "Data Not Submitted" && "text-[hsl(36,94%,50%)]"} 
+                                    ${card.status === "Waiting for Approval" && "text-[#497cda]"}
                                     ${card.status === "Approved" && "text-sucess"}
-                                     ${card.status === "Rejected" && "text-[#F2440D]"}
-                                      ${card.status === "Pending" && "text-[#F79708]"}
+                                     ${card.status === "Rejected" && "text-[#f2440d]"}
+                                      ${card.status === "Pending" && "text-[hsl(36,94%,50%)]"}
                                      text-neutral-600`}>
                                             <span
                                                 className={`w-3 h-3 mx-2 inline-block rounded-full
-                                             ${card.status === "Waiting for Approval" && "bg-[#487ADA]"} 
-                                             ${card.status === "Data Not Submitted" && "bg-[#F79708]"}
+                                             ${card.status === "Waiting for Approval" && "bg-[#497cda]"} 
+                                             ${card.status === "Data Not Submitted" && "bg-[hsl(36,94%,50%)]"}
                                               ${card.status === "Approved" && "bg-sucess"}
-                                               ${card.status === "Rejected" && "bg-[#F2440D]"}
-                                                 ${card.status === "Pending" && "bg-[ #F79708]"}
+                                               ${card.status === "Rejected" && "bg-[#f2440d]"}
+                                                 ${card.status === "Pending" && "bg-[hsl(36,94%,50%)]"}
 
                                              `}>
                                             </span>{card.status}</div></td>
