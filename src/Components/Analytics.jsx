@@ -16,6 +16,9 @@ import { Circle } from "lucide-react";
 import { X } from "lucide-react";
 import { baseurl } from "./globals/constants";
 import Approver from "./Approver";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addLandId } from "./ui/Slice";
 export default function Analytics() {
     const roleName = localStorage.getItem("RoleName");
 
@@ -78,8 +81,9 @@ export default function Analytics() {
 
 
 
+    const navigate = useNavigate();
 
-    const [Url] = useState(new URL(`${roleName === "Editor" || roleName==="Approver" ?
+    const [Url] = useState(new URL(`${roleName === "Editor" || roleName === "Approver" ?
         `${baseurl}/Land/GetLandsByAssetId?&PageNo=${pageNumber}&PageSizee=12` :
         `${baseurl}/Land/GetLandsByAssetIdForViewer?&PageNo=${pageNumber}&PageSize=12`}`));
 
@@ -96,11 +100,12 @@ export default function Analytics() {
 
 
     }
+
     useEffect(() => {
-        
-            setParams();
-        
-       
+
+        setParams();
+
+
     }, [])
 
     const getLands = async () => {
@@ -249,12 +254,7 @@ export default function Analytics() {
 
 
         Url.searchParams.set("userId", id);
-        // setAssetId("");
-        // setAssetName("Asset");
-        // Url.searchParams.delete("assetId");
-
-
-
+       
     }
 
     const handleWltStatus = (id, wltStatusName) => {
@@ -339,6 +339,18 @@ export default function Analytics() {
         setLandUseId(""); setLandUseName("Land Use"); Url.searchParams.delete("landUseId");
         Url.searchParams.delete("searchText");
 
+    }
+    const dispatch=useDispatch()
+    const handleNavigation = (card) => {
+        if(roleName==="Editor"){
+            dispatch(addLandId(card.landId))
+        }
+        navigate('/land-overview', {
+            state: {
+              card
+            }
+        })
+
 
     }
 
@@ -348,7 +360,7 @@ export default function Analytics() {
 
             <div className="bg-white   py-7 rounded-md">
 
-                <div className={`grid grid-rows-1 ${roleName==="Viewer"?"grid-cols-[0.5fr_0.4fr_auto_auto_auto_auto_auto_auto] ":"grid-cols-[1fr_0.6fr_0.3fr_0.3fr_0.3fr_0.3fr] "} gap-3 pb-5 px-4 `}>
+                <div className={`grid grid-rows-1 ${roleName === "Viewer" ? "grid-cols-[0.5fr_0.4fr_auto_auto_auto_auto_auto_auto] " : "grid-cols-[1fr_0.6fr_0.3fr_0.3fr_0.3fr_0.3fr] "} gap-3 pb-5 px-4 `}>
                     <div className="flex-1">
                         <SearchInput handleSearchText={handleSearchText} Url={Url} />
                     </div>
@@ -356,13 +368,14 @@ export default function Analytics() {
                     <Cityinput handleCity={handleCity} cityName={cityName} visibleInput={visibleInput} setVisibleInput={setVisibleInput} assetId={assetId} />
                     <DistricInput handleDistrict={handleDistrict} districtName={districtName} cityId={cityId} assetId={assetId} visibleInput={visibleInput} setVisibleInput={setVisibleInput} />
                     <OwnerInput handleOwner={handleOwner} ownerName={ownerName} visibleInput={visibleInput} setVisibleInput={setVisibleInput} assetId={assetId} cityId={cityId} />
-                    <WltStatusInput handleWltStatus={handleWltStatus} wltStatusName={wltStatusName} visibleInput={visibleInput} setVisibleInput={setVisibleInput}  />
+                    <WltStatusInput handleWltStatus={handleWltStatus} wltStatusName={wltStatusName} visibleInput={visibleInput} setVisibleInput={setVisibleInput} />
                     {roleName === "Viewer" && <>
                         <LandUseInput handleLandUse={handleLandUse} landUseName={landUseName} visibleInput={visibleInput} setVisibleInput={setVisibleInput} />
                         <BusinessPlanInput handleBusinessPlan={handleBusinessPlan} businessPlanName={businessPlanName} visibleInput={visibleInput} setVisibleInput={setVisibleInput} />
                     </>}
                 </div>
                 <hr />
+
                 <div className="flex gap-3 px-4 py-4">
                     {filters.map((ele, index) => {
                         return (
@@ -450,142 +463,142 @@ export default function Analytics() {
 
             {isloading ? <Loader /> :
                 <div> {cards?.length > 0 ?
-                    roleName==="Approver"?<Approver cards={cards}/>:<div className="grid grid-cols-3 gap-[13px] my-6">
-                    {cards?.map((card, index) => {
-                        return (
-                            <div key={index} className=" border rounded-2xl py-8 bg-white">
-                                {roleName === "Editor" && <div className={`mx-6 mb-4 py-2 text-center font-outfit font-bold border rounded ${card.status === "Waiting for Approval" ? "bg-secondary-600" : (card.status === "Approved" ? "bg-sucess-700" : "bg-warning-600")}  ${card.status === "Waiting for Approval" ? "border-secondary-600" : (card.status === "Approved" ? "border-sucess-700" : "border-warning-700")}  ${card.status === "Waiting for Approval" ? "text-secondary-400" : (card.status === "Approved" ? "text-sucess" : "text-warning-800")}`}>{card.status}</div>}
-                                <div className="flex justify-between px-6">
+                    roleName === "Approver" ? <Approver cards={cards} /> : <div className="cursor-pointer grid grid-cols-3 gap-[13px] my-6">
+                        {cards?.map((card, index) => {
+                            return (
+                                <div key={index} className=" border rounded-2xl py-8 bg-white" onClick={() => handleNavigation(card)}>
+                                    {roleName === "Editor" && <div className={`mx-6 mb-4 py-2 text-center font-outfit font-bold border rounded ${card.status === "Waiting for Approval" ? "bg-secondary-600" : (card.status === "Approved" ? "bg-sucess-700" : "bg-warning-600")}  ${card.status === "Waiting for Approval" ? "border-secondary-600" : (card.status === "Approved" ? "border-sucess-700" : "border-warning-700")}  ${card.status === "Waiting for Approval" ? "text-secondary-400" : (card.status === "Approved" ? "text-sucess" : "text-warning-800")}`}>{card.status}</div>}
+                                    <div className="flex justify-between px-6">
 
-                                    <div className="flex flex-col row-span-2">
-                                        <p className="font-outfit font-bold text-primary text-base leading-6">{card.referenceNumber}</p>
-                                        <p className="font-outfit font-medium text-base leading-[19.2px] text-primary-600">Asset:{card.assetName}</p>
-                                        <p className="font-outfit font-medium text-sm leading-[16.8px] text-neutral-700">Sub Asset:{card.subAssetName}</p>
-                                    </div>
-
-                                    <div className="flex flex-col">
-                                        <div className={`px-4 ${card.landType === "Transactable" ? "bg-secondary-500" : "bg-warning-500"} rounded-lg py-[6px]   flex items-center gap-3 justify-center`}>
-                                            <p className={`${card.landType === "Transactable" ? "text-secondary" : "text-warning"} font-outfit font-medium text-base leading-6`} >{card.businessPlan}</p>
-
-                                            {card.landType === "Transactable" && <img src="src/assets/Transactable.svg" alt="" />}
-                                            {card.landType === "Non-Transactable" && <img src="src/assets/Non transactible.svg" alt="" />}
+                                        <div className="flex flex-col row-span-2">
+                                            <p className="font-outfit font-bold text-primary text-base leading-6">{card.referenceNumber}</p>
+                                            <p className="font-outfit font-medium text-base leading-[19.2px] text-primary-600">Asset:{card.assetName}</p>
+                                            <p className="font-outfit font-medium text-sm leading-[16.8px] text-neutral-700">Sub Asset:{card.subAssetName}</p>
                                         </div>
-                                        <div className="flex justify-end items-center gap-2">
-                                            {(card.landStatus === "Developed") && <Circle className="h-3 w-3 text-sucess bg-sucess rounded-[50%]" />}
-                                            {(card.landStatus === "RAW") && <Circle className="h-3 w-3 text-warning bg-warning rounded-[50%]" />}
-                                            <p className={`${(card.landStatus) === "Developed" ? "text-sucess" : "text-warning"} font-outfit font-medium text-base leading-6`}>{card.landStatus}</p>
 
-                                        </div>
-                                    </div>
-                                </div>
+                                        <div className="flex flex-col">
+                                            <div className={`px-4 ${card.landType === "Transactable" ? "bg-secondary-500" : "bg-warning-500"} rounded-lg py-[6px]   flex items-center gap-3 justify-center`}>
+                                                <p className={`${card.landType === "Transactable" ? "text-secondary" : "text-warning"} font-outfit font-medium text-base leading-6`} >{card.businessPlan}</p>
 
-                                <div className=" bg-primary_yellow-200 px-8 py-4 mt-6">
-                                    <div className="flex gap-3">
-                                        <div> <img src="src/assets/TDinActive.svg" alt="TD In Active" /></div>
-                                        <div className="flex flex-col gap-y-3">
-                                            <div className="flex gap-3">
-                                                <img src="src/assets/analy1.svg" alt="" />
-                                                <p className="text-neutral-700 font-outfit font-semibold text-lg leading-[21.6px]">{card.deedOwner}</p>
+                                                {card.landType === "Transactable" && <img src="src/assets/Transactable.svg" alt="" />}
+                                                {card.landType === "Non-Transactable" && <img src="src/assets/Non transactible.svg" alt="" />}
                                             </div>
-                                            <div className="flex gap-3">
-                                                <img src="src/assets/analy2.svg" alt="" />
-                                                <p className="text-neutral-700 font-outfit font-medium text-lg leading-[21.6px]">{card.deedType}</p>
+                                            <div className="flex justify-end items-center gap-2">
+                                                {(card.landStatus === "Developed") && <Circle className="h-3 w-3 text-sucess bg-sucess rounded-[50%]" />}
+                                                {(card.landStatus === "RAW") && <Circle className="h-3 w-3 text-warning bg-warning rounded-[50%]" />}
+                                                <p className={`${(card.landStatus) === "Developed" ? "text-sucess" : "text-warning"} font-outfit font-medium text-base leading-6`}>{card.landStatus}</p>
+
                                             </div>
                                         </div>
                                     </div>
 
-                                </div>
-                                <div className="grid grid-cols-2 grid-rows-2 px-6 pt-4 gap-2  ">
-                                    <div className=" min-h[48px ]  bg-primary-100 rounded-[47px] flex items-center gap-2 ">
-
-                                        <div className="bg-primary-200 h-[40px] w-[40px] flex items-center justify-center rounded-[47px] m-1  ">
-                                            {
-                                                (
-                                                    () => {
-                                                        switch (card.landUse) {
-                                                            case "Residential":
-                                                                return <img src="src/assets/residential.svg" alt="" />;
-
-                                                            case "Commercial":
-                                                            case "Retail Spaces":
-                                                            case "Shopping centers":
-                                                            case "Malls":
-                                                            case "Restaurant":
-                                                            case "Hotels and motels":
-                                                            case "Office buildings":
-                                                                return <img src="src/assets/Commercial.svg" alt="" />;
-
-                                                            case "Public & Institutional":
-                                                            case "Educational":
-                                                            case "Schools":
-                                                            case "Universities":
-                                                            case "Training centers":
-                                                            case "Healthcare":
-                                                            case "Hospitals":
-                                                            case "Hospital":
-                                                            case "Clinic":
-                                                            case "Health centers":
-                                                            case "Mosque":
-                                                            case "Government":
-                                                            case "Government Offices":
-                                                                return <img src="src/assets/Public & Institutional.svg" alt="" />;
-                                                            case "Agricultural":
-                                                            case "Farms":
-
-                                                                return <img src="src/assets/Agricultural.svg" alt="" />;
-
-                                                            case "Industrial":
-                                                            case "Manufacturing plants":
-                                                            case "Distribution centers":
-                                                            case "Research and development facilities":
-                                                            case "Warehouses":
-                                                                return <img src="src/assets/industrial.svg" alt="" />;
-                                                            case "Mixed-Use":
-                                                                return <img src="src/assets/Mixed Use.svg" alt="" />
-
-
-
-
-
-                                                            default:
-                                                                break;
-                                                        }
-                                                    })()
-                                            }
-                                        </div>
-
-                                        <p className=" text-primaryfont-outfit font-semibold text-sm leading-[16.8px] text-primary ">{card.landUse}</p>
-                                    </div>
-                                    <div className={`min-h[48px ] ${card.wltStatus === "Yes" ? "bg-sucess-500" : "bg-warning-500"}  rounded-[47px] flex items-center gap-3`}>
-                                        <div className={`${card.wltStatus === "Yes" ? "bg-sucess-600" : "bg-warning-600"} h-[40px] w-[40px] flex items-center justify-center rounded-[47px] m-1`}>
-                                            <div className={`rounded-[50%] w-5 h-5  border-[1.5px] flex justify-center items-center  ${card.wltStatus === "Yes" ? "border-sucess" : "border-warning"}`}>
-                                                {card.wltStatus === "Yes" && <Check className="text-sucess" />}
-                                                {card.wltStatus === "No" && <Check className="text-warning" />}
-
+                                    <div className=" bg-primary_yellow-200 px-8 py-4 mt-6">
+                                        <div className="flex gap-3">
+                                            <div> <img src="src/assets/TDinActive.svg" alt="TD In Active" /></div>
+                                            <div className="flex flex-col gap-y-3">
+                                                <div className="flex gap-3">
+                                                    <img src="src/assets/analy1.svg" alt="" />
+                                                    <p className="text-neutral-700 font-outfit font-semibold text-lg leading-[21.6px]">{card.deedOwner}</p>
+                                                </div>
+                                                <div className="flex gap-3">
+                                                    <img src="src/assets/analy2.svg" alt="" />
+                                                    <p className="text-neutral-700 font-outfit font-medium text-lg leading-[21.6px]">{card.deedType}</p>
+                                                </div>
                                             </div>
                                         </div>
-                                        <p className={`${card.wltStatus === "Yes" ? "text-sucess" : "text-warning"} font-outfit font-semibold text-sm leading-[16.8px] `}>WLT {card.wltStatus}</p>
-                                    </div>
-                                    <div className="min-h[48px ] bg-primary-100 rounded-[47px] flex items-center gap-3">
-                                        <div className="bg-primary-200 h-[40px] w-[40px] flex items-center justify-center rounded-[47px] m-1">
-                                            <img src="src/assets/Group 6.svg" alt="" />
-                                        </div>
-                                        <p className=" text-primary font-outfit font-semibold text-sm leading-[16.8px]  ">{card.cityName}</p>
-                                    </div>
-                                    <div className="min-h[48px ] flex items-center gap-3  bg-primary-100 rounded-[47px]">
-                                        <div className="bg-primary-200 h-[40px] w-[40px] flex items-center justify-center rounded-[47px] m-1 ">
-                                            <img src="src/assets/Group 18.svg" alt="" />
-                                        </div>
-                                        <p className=" text-primary font-outfit font-semibold text-sm leading-[16.8px]  ">{(card.landArea).toLocaleString('en-IN')} m2</p>
-                                    </div>
 
+                                    </div>
+                                    <div className="grid grid-cols-2 grid-rows-2 px-6 pt-4 gap-2  ">
+                                        <div className=" min-h[48px ]  bg-primary-100 rounded-[47px] flex items-center gap-2 ">
+
+                                            <div className="bg-primary-200 h-[40px] w-[40px] flex items-center justify-center rounded-[47px] m-1  ">
+                                                {
+                                                    (
+                                                        () => {
+                                                            switch (card.landUse) {
+                                                                case "Residential":
+                                                                    return <img src="src/assets/residential.svg" alt="" />;
+
+                                                                case "Commercial":
+                                                                case "Retail Spaces":
+                                                                case "Shopping centers":
+                                                                case "Malls":
+                                                                case "Restaurant":
+                                                                case "Hotels and motels":
+                                                                case "Office buildings":
+                                                                    return <img src="src/assets/Commercial.svg" alt="" />;
+
+                                                                case "Public & Institutional":
+                                                                case "Educational":
+                                                                case "Schools":
+                                                                case "Universities":
+                                                                case "Training centers":
+                                                                case "Healthcare":
+                                                                case "Hospitals":
+                                                                case "Hospital":
+                                                                case "Clinic":
+                                                                case "Health centers":
+                                                                case "Mosque":
+                                                                case "Government":
+                                                                case "Government Offices":
+                                                                    return <img src="src/assets/Public & Institutional.svg" alt="" />;
+                                                                case "Agricultural":
+                                                                case "Farms":
+
+                                                                    return <img src="src/assets/Agricultural.svg" alt="" />;
+
+                                                                case "Industrial":
+                                                                case "Manufacturing plants":
+                                                                case "Distribution centers":
+                                                                case "Research and development facilities":
+                                                                case "Warehouses":
+                                                                    return <img src="src/assets/industrial.svg" alt="" />;
+                                                                case "Mixed-Use":
+                                                                    return <img src="src/assets/Mixed Use.svg" alt="" />
+
+
+
+
+
+                                                                default:
+                                                                    break;
+                                                            }
+                                                        })()
+                                                }
+                                            </div>
+
+                                            <p className=" text-primaryfont-outfit font-semibold text-sm leading-[16.8px] text-primary ">{card.landUse}</p>
+                                        </div>
+                                        <div className={`min-h[48px ] ${card.wltStatus === "Yes" ? "bg-sucess-500" : "bg-warning-500"}  rounded-[47px] flex items-center gap-3`}>
+                                            <div className={`${card.wltStatus === "Yes" ? "bg-sucess-600" : "bg-warning-600"} h-[40px] w-[40px] flex items-center justify-center rounded-[47px] m-1`}>
+                                                <div className={`rounded-[50%] w-5 h-5  border-[1.5px] flex justify-center items-center  ${card.wltStatus === "Yes" ? "border-sucess" : "border-warning"}`}>
+                                                    {card.wltStatus === "Yes" && <Check className="text-sucess" />}
+                                                    {card.wltStatus === "No" && <Check className="text-warning" />}
+
+                                                </div>
+                                            </div>
+                                            <p className={`${card.wltStatus === "Yes" ? "text-sucess" : "text-warning"} font-outfit font-semibold text-sm leading-[16.8px] `}>WLT {card.wltStatus}</p>
+                                        </div>
+                                        <div className="min-h[48px ] bg-primary-100 rounded-[47px] flex items-center gap-3">
+                                            <div className="bg-primary-200 h-[40px] w-[40px] flex items-center justify-center rounded-[47px] m-1">
+                                                <img src="src/assets/Group 6.svg" alt="" />
+                                            </div>
+                                            <p className=" text-primary font-outfit font-semibold text-sm leading-[16.8px]  ">{card.cityName}</p>
+                                        </div>
+                                        <div className="min-h[48px ] flex items-center gap-3  bg-primary-100 rounded-[47px]">
+                                            <div className="bg-primary-200 h-[40px] w-[40px] flex items-center justify-center rounded-[47px] m-1 ">
+                                                <img src="src/assets/Group 18.svg" alt="" />
+                                            </div>
+                                            <p className=" text-primary font-outfit font-semibold text-sm leading-[16.8px]  ">{(card.landArea).toLocaleString('en-IN')} m2</p>
+                                        </div>
+
+
+                                    </div>
 
                                 </div>
-
-                            </div>
-                        )
-                    })}
-                </div>
+                            )
+                        })}
+                    </div>
                     :
                     <div className="h-52 flex justify-center items-center font-outfit text-3xl text-neutral-500">
                         No data Found

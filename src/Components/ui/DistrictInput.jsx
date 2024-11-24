@@ -12,6 +12,7 @@ function DistricInput({ handleDistrict, districtName, cityId, visibleInput, setV
     const [orginalDistricts, setOrginalDistricts] = useState([]);
 
 
+
     async function getdistricts() {
         try {
             if (cityId) {

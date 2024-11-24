@@ -8,9 +8,10 @@ import Loader from "./Components/Loader";
 
 
 
-const Analytics =lazy(()=>import("./Components/Analytics"))
-const LandCard = lazy(() => import("./Components/Landcard"))
-const ViewAllLands = lazy(() => import("./Components/ViewAllLands"))
+const Analytics =lazy(()=>import("./Components/Analytics"));
+const LandCard = lazy(() => import("./Components/Landcard"));
+const ViewAllLands = lazy(() => import("./Components/ViewAllLands"));
+const LandOverview=lazy(()=>import("./Components/LandOverview"));
 
 function App() {
   const appRouter = createBrowserRouter([
@@ -39,6 +40,12 @@ function App() {
             path: "analytics",
             element: (<Suspense fallback={<Loader />}>
               <Analytics />
+            </Suspense>)
+          },
+          {
+            path: "land-overview",
+            element: (<Suspense fallback={<Loader />}>
+              <LandOverview />
             </Suspense>)
           }
         ]

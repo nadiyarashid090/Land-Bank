@@ -83,11 +83,7 @@ export default {
   },
   
     
-    plugins: [ scrollbar ({ nocompatible: true }),
-      ("tailwindcss/line-clamp")
-      
-      
-  ],
+    plugins: [ require('tailwind-scrollbar')],
 
 
 };

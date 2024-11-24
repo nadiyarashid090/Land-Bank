@@ -48,7 +48,7 @@ export default function AssetssInput({ handleAsset, assetName, visibleInput, set
                 </button>
                 
                 {visibleInput === "Assets" && (
-                    <div className="absolute top-20 left-0 p-2 outline-none border border-primary-input text-base text-primary font-outfit w-max h-52 overflow-y-auto overflow-hidden bg-white" 
+                    <div className="absolute  top-20 left-0 p-2 outline-none border border-primary-input text-base text-primary font-outfit w-max h-52 overflow-y-auto overflow-hidden bg-white" 
                          onClick={(e) => e.stopPropagation()} 
                     >
                         <div className="border w-[95%] flex justify-between rounded p-3 m-2">

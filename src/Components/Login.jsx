@@ -14,7 +14,7 @@ export default function Login() {
     const form = useForm();
     const { register, control, handleSubmit, formState } = form;
     const { errors } = formState
-    console.log("errors", errors);
+    // console.log("errors", errors);
     const [loading, setLoading] = useState(false);
   
     const navigate = useNavigate();
@@ -25,7 +25,7 @@ export default function Login() {
 
             const response = await axios.post(`${baseurl}/Account/Login/login`, { email, password });
             setLoading(false);
-            console.log(response);
+            // console.log(response);
             localStorage.setItem("DisplayName", response.data.data.displayname);
             localStorage.setItem("Department", response.data.data.department);
             localStorage.setItem("Email", response.data.data.email);
@@ -48,7 +48,7 @@ export default function Login() {
             <div className="h-screen flex justify-center items-center">
                 <div className=" bg-white font-outfit p-10 rounded-xl ">
                     <h1 className="text-3xl font-bold"> Welcome to AWJ Land Bank Hub</h1>
-                    <form onSubmit={handleSubmit(handlsubmitData)} >
+                    <form onSubmit={handleSubmit(handlsubmitData)}   >
                         <div className="my-4 font-semibold">
                             <label htmlFor="email">Username</label>
                             <input type="text" id="email" {...register("email")} required className="border w-full p-3 rounded-xl my-2 " />

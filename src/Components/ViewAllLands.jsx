@@ -105,7 +105,7 @@ export default function ViewAllLands() {
             <div className="grid grid-cols-[1.5fr_1.5fr_1fr_1fr] gap-3 p-8 bg-white border border-primary-input rounded-2xl mt-10">
                 <SearchInput handleSearchText={handleSearchText} />
                 <AssetssInput handleAsset={handleAsset} assetName={truncate(assetName, 14)} visibleInput={visibleInput} setVisibleInput={setVisibleInput} />
-                    <Cityinput handleCity={handleCity} cityName={cityName} visibleInput={visibleInput} setVisibleInput={setVisibleInput} />
+                    <Cityinput handleCity={handleCity} cityName={cityName} visibleInput={visibleInput} setVisibleInput={setVisibleInput} assetId={assetId} />
                     <DistricInput handleDistrict={handleDistrict} districtName={districtName} cityId={cityId} visibleInput={visibleInput} setVisibleInput={setVisibleInput} />
 
             </div>

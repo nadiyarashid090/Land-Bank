@@ -1,4 +1,18 @@
+import { useNavigate } from "react-router-dom"
 export default function Approver({ cards }) {
+    const navigate=useNavigate();
+    const handleNavigation = (landId
+    ) => {
+
+        navigate('/land-overview', {
+            state: {
+                landId
+            }
+        })
+
+
+    }
+
    
 
     return (
@@ -20,7 +34,7 @@ export default function Approver({ cards }) {
                         {
                             cards?.map((card, index) => {
                                 return (
-                                    <tr key={index} className="bg-[#EFECE480] ">
+                                    <tr key={index} className="cursor-pointer bg-[#EFECE480] " onClick={()=>handleNavigation(card.landId)}>
                                         <td className="py-3 rounded-l-lg px-2 border-primary-300 "><div className="py-[6px] text-neutral-600">{card.landId}</div></td>
                                         <td className="py-3  px-2 border-primary-300  "><div className="py-[6px] border-primary-300 border-r text-neutral-600">{card.referenceNumber}</div></td>
                                         <td className="py-3  px-2 border-primary-300  "><div className="py-[6px] border-primary-300 border-r text-neutral-600">{card.assetName}</div></td>
